@@ -1,4 +1,17 @@
 @page "/payment"
+@using System.Text.Json
+@using System.Text
+@using System.Text.Json.Serialization
+@inject StateContainer StateContainer
+@inject IHttpClientFactory ClientFactory
+@using Microsoft.Extensions.Logging
+@inject ILogger<Payment> Logger
+
+
+
+
+<button @onclick ="PayFineAsync"> Pay </button>
+
 @using Microsoft.Extensions.Logging
 @inject ILogger<Payment> Logger
 
@@ -45,6 +58,7 @@
 
 
 @code {
+
     private PaymentModel paymentModel = new();
 
     private void HandleSubmit()
@@ -59,5 +73,82 @@
 
         // Process the form
     }
+      private void ChangePropertyValue(string Id)
+    {
+        StateContainer.Property = Id;
+    }
+    
+
+    private const string webApiUri = "http://localhost:5108/api/Fines";
+    public static Fine newFine;
+    
+    private bool FineError;
+    private bool shouldRender;
+    private string? fineID = "";
+
+
+    protected override bool ShouldRender() => shouldRender;
+    
+    protected async  Task RetrieveFineAsync()
+    {
+
+        
+        fineID = StateContainer.testID;
+        var request = new HttpRequestMessage(HttpMethod.Get, webApiUri + "/" + fineID);
+        request.Headers.Add("Accept", "application/json");
+        request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
+
+        var client = ClientFactory.CreateClient();
+
+        var response = await client.SendAsync(request);
+
+
+        if (response.IsSuccessStatusCode)
+        {
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            newFine = await JsonSerializer.DeserializeAsync<Fine>(responseStream);
+        }
+        else
+        {
+            FineError = true;
+        }
+
+        shouldRender = true;
+
+        
+    }
+
+     public async  Task PayFineAsync()
+    {
+
+        await RetrieveFineAsync();
+     
+        newFine.IsPaid = true;
+
+        var request = new HttpRequestMessage(HttpMethod.Put, webApiUri + "/" + fineID);
+        request.Headers.Add("Accept", "application/json");
+        request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
+        var jsonFine = JsonSerializer.Serialize(newFine);
+        var content = new StringContent(jsonFine, Encoding.UTF8, "application/json");
+        request.Content = content;
+
+        var client = ClientFactory.CreateClient();
+
+        var response = await client.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+          
+        }
+        else
+        {
+            FineError = true;
+        }
+
+        shouldRender = true;
+        
+    }
+    
 }
+
 
