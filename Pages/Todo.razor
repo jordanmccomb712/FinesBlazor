@@ -1,48 +1,42 @@
-﻿@page "/todo"
+﻿@page "/FindMyFine"
 @using System.Text.Json
 @using System.Text
 @using System.Text.Json.Serialization
+@inject StateContainer StateContainer
 @inject IHttpClientFactory ClientFactory
+
 
 
 <input placeholder="Please enter your fine reference" @bind="fineID"/>
 <button @onclick ="RetrieveFineAsync"> Search </button>
 
-<input placeholder="Please pay your fine reference" @bind="fineID"/>
-<button @onclick ="PayFineAsync"> Pay </button>
+<NavLink class="nav-link" href="payment/">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Pay Now
+</NavLink>
 
 
 
 @code {
+      private void ChangePropertyValue(string Id)
+    {
+        StateContainer.Property = Id;
+    }
     
 
     private const string webApiUri = "http://localhost:5108/api/Fines";
-    private Fine newFine;
+    public static Fine newFine;
     
-    private bool getTodoItemError;
+    private bool FineError;
     private bool shouldRender;
     private string? fineID = "";
 
     protected override bool ShouldRender() => shouldRender;
     
-
-    /*
-    private void AddTodo()
-    {
-        if(!string.IsNullOrWhiteSpace(newTodo))
-        {
-            OnPostAsync(new TodoItem { Id = 0, Name = newTodo, IsComplete = false});
-            newTodo = string.Empty;
-        }
-    }
-    */
-
-    //method to get all todos from api
-
-    
     
     protected async  Task RetrieveFineAsync()
     {
+
+        StateContainer.testID = fineID;
         var request = new HttpRequestMessage(HttpMethod.Get, webApiUri + "/" + fineID);
         request.Headers.Add("Accept", "application/json");
         request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
@@ -59,7 +53,7 @@
         }
         else
         {
-            getTodoItemError = true;
+            FineError = true;
         }
 
         shouldRender = true;
@@ -74,35 +68,6 @@
         Console.WriteLine(newFine.AmountDue);
         Console.WriteLine(newFine.DateIssued);
         Console.WriteLine(newFine.IsPaid);
-        
-    }
-
-     protected async  Task PayFineAsync()
-    {
-     
-        newFine.IsPaid = true;
-
-        var request = new HttpRequestMessage(HttpMethod.Put, webApiUri + "/" + fineID);
-        request.Headers.Add("Accept", "application/json");
-        request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
-        var jsonFine = JsonSerializer.Serialize(newFine);
-        var content = new StringContent(jsonFine, Encoding.UTF8, "application/json");
-        request.Content = content;
-
-        var client = ClientFactory.CreateClient();
-
-        var response = await client.SendAsync(request);
-
-        if (response.IsSuccessStatusCode)
-        {
-          
-        }
-        else
-        {
-            getTodoItemError = true;
-        }
-
-        shouldRender = true;
         
     }
     
