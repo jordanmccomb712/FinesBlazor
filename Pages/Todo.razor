@@ -5,36 +5,28 @@
 @inject IHttpClientFactory ClientFactory
 
 
-<h3>Todo (@todoItems.Count(todo => !todo.IsComplete))</h3>
+<input placeholder="Please enter your fine reference" @bind="fineID"/>
+<button @onclick ="RetrieveFineAsync"> Search </button>
 
-<input placeholder="Something todo" @bind="newTodo"/>
-<button @onclick ="AddTodo"> Add todo </button>
-
-
-<ol>
-    @foreach (var todo in todoItems)
-    {
-        <li>
-
-            <input type="checkbox" @bind="todo.IsComplete"/>
-            <input @bind="todo.Name"/>
-
-        </li>
-    }
-</ol>
+<input placeholder="Please pay your fine reference" @bind="fineID"/>
+<button @onclick ="PayFineAsync"> Pay </button>
 
 
 
 @code {
+    
 
-    private const string webApiUri = "http://localhost:5269/api/TodoItems";
-    private IEnumerable<TodoItem> todoItems = Array.Empty<TodoItem>();
+    private const string webApiUri = "http://localhost:5108/api/Fines";
+    private Fine newFine;
     
     private bool getTodoItemError;
     private bool shouldRender;
-    private string? newTodo;
+    private string? fineID = "";
 
     protected override bool ShouldRender() => shouldRender;
+    
+
+    /*
     private void AddTodo()
     {
         if(!string.IsNullOrWhiteSpace(newTodo))
@@ -43,12 +35,15 @@
             newTodo = string.Empty;
         }
     }
+    */
 
     //method to get all todos from api
+
     
-    protected override async  Task OnInitializedAsync()
+    
+    protected async  Task RetrieveFineAsync()
     {
-        var request = new HttpRequestMessage(HttpMethod.Get, webApiUri);
+        var request = new HttpRequestMessage(HttpMethod.Get, webApiUri + "/" + fineID);
         request.Headers.Add("Accept", "application/json");
         request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
 
@@ -56,11 +51,11 @@
 
         var response = await client.SendAsync(request);
 
+
         if (response.IsSuccessStatusCode)
         {
             using var responseStream = await response.Content.ReadAsStreamAsync();
-            
-            todoItems = await JsonSerializer.DeserializeAsync<IEnumerable<TodoItem>>(responseStream);
+            newFine = await JsonSerializer.DeserializeAsync<Fine>(responseStream);
         }
         else
         {
@@ -70,47 +65,45 @@
         shouldRender = true;
 
         //todo, make this a return of a todoItems list, then add that to the post
+
+
+        //FOR TESTING PURPOSES
+
+        Console.WriteLine(newFine.FineID);
+        Console.WriteLine(newFine.FullName);
+        Console.WriteLine(newFine.AmountDue);
+        Console.WriteLine(newFine.DateIssued);
+        Console.WriteLine(newFine.IsPaid);
         
     }
 
-    private async Task OnPostAsync(TodoItem newTodoItem)
+     protected async  Task PayFineAsync()
     {
-        var request = new HttpRequestMessage(HttpMethod.Post, webApiUri);
+     
+        newFine.IsPaid = true;
+
+        var request = new HttpRequestMessage(HttpMethod.Put, webApiUri + "/" + fineID);
         request.Headers.Add("Accept", "application/json");
         request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
-        var jsonTodo = JsonSerializer.Serialize(newTodoItem);
-        var content = new StringContent(jsonTodo, Encoding.UTF8, "application/json");
+        var jsonFine = JsonSerializer.Serialize(newFine);
+        var content = new StringContent(jsonFine, Encoding.UTF8, "application/json");
         request.Content = content;
 
         var client = ClientFactory.CreateClient();
 
         var response = await client.SendAsync(request);
 
-        Console.WriteLine(jsonTodo);
-        Console.WriteLine("Reaches here 3");
-        await OnInitializedAsync();
-
-        
-
         if (response.IsSuccessStatusCode)
         {
-
-            using var responseStream = await response.Content.ReadAsStreamAsync();
-            todoItems = await JsonSerializer.DeserializeAsync<IEnumerable<TodoItem>>(responseStream);
-            Console.WriteLine("Reaches here");
-            
+          
         }
         else
         {
             getTodoItemError = true;
-            Console.WriteLine("Reaches here 2");
         }
-        
-        
+
         shouldRender = true;
         
-
     }
-
-   
+    
 }
