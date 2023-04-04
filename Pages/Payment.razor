@@ -4,27 +4,45 @@
 
 <h1>Pay your fine here</h1>
 
+
 <EditForm Model="@paymentModel" OnSubmit="@HandleSubmit">
+
     <label for="fineID">Fine ID:</label>
-    <InputText id="fineID" @bind-Value="paymentModel.FineID"/>
+    <div class="m-3">
+        <InputText id="fineID" @bind-Value="paymentModel.FineID" placeholder="Fine ID" />
+    </div>
 
     <label for="title">Title:</label>
-    <InputText id="title" @bind-Value="paymentModel.Title"/>
+    <div class="m-3">
+        <InputText id="title" @bind-Value="paymentModel.Title" placeholder="Title" />
+    </div>
 
     <label for="name">Cardholder Name:</label>
-    <InputText id="name" @bind-Value="paymentModel.Name"/>
+    <div class="m-3">
+        <InputText id="name" @bind-Value="paymentModel.Name" placeholder="Cardholder name" />
+    </div>
 
     <label for="date">Date:</label>
-    <InputDate id="date" @bind-Value="paymentModel.Date"/>
+    <div class="m-3">
+        <InputDate id="date" @bind-Value="paymentModel.Date" />
+    </div>
 
     <label for="cardNum">Card Number:</label>
-    <InputNumber id="name" @bind-Value="paymentModel.CardNum"/>
-    
-    <label for="cvc">CVC:</label>
-    <InputNumber id="cvc" @bind-Value="paymentModel.CVC"/>
+    <div class="m-3">
+        <InputNumber id="name" @bind-Value="paymentModel.CardNum" placeholder="Card number" />
+    </div>
 
-    <button type="submit">Submit</button>
+    <label for="cvc">CVC:</label>
+    <div class="m-3">
+        <InputNumber id="cvc" @bind-Value="paymentModel.CVC" placeholder="CVC" />
+    </div>
+
+
+        <button type="submit">Submit</button>
+
 </EditForm>
+
+
 
 @code {
     private PaymentModel paymentModel = new();
