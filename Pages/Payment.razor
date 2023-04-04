@@ -1,3 +1,45 @@
 @page "/payment"
+@using Microsoft.Extensions.Logging
+@inject ILogger<Payment> Logger
 
 <h1>Pay your fine here</h1>
+
+<EditForm Model="@paymentModel" OnSubmit="@HandleSubmit">
+    <label for="fineID">Fine ID:</label>
+    <InputText id="fineID" @bind-Value="paymentModel.FineID"/>
+
+    <label for="title">Title:</label>
+    <InputText id="title" @bind-Value="paymentModel.Title"/>
+
+    <label for="name">Cardholder Name:</label>
+    <InputText id="name" @bind-Value="paymentModel.Name"/>
+
+    <label for="date">Date:</label>
+    <InputDate id="date" @bind-Value="paymentModel.Date"/>
+
+    <label for="cardNum">Card Number:</label>
+    <InputNumber id="name" @bind-Value="paymentModel.CardNum"/>
+    
+    <label for="cvc">CVC:</label>
+    <InputNumber id="cvc" @bind-Value="paymentModel.CVC"/>
+
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private PaymentModel paymentModel = new();
+
+    private void HandleSubmit()
+    {
+        Logger.LogInformation("HandleSubmit called");
+        Logger.LogInformation("title: " + paymentModel.Title);
+        Logger.LogInformation("name: " + paymentModel.Name);
+        Logger.LogInformation("Date: " + paymentModel.Date);
+        Logger.LogInformation("CardNum: " + paymentModel.CardNum);
+        Logger.LogInformation("CVC: " + paymentModel.CVC);
+        Logger.LogInformation("FineID: " + paymentModel.FineID);
+
+        // Process the form
+    }
+}
+
