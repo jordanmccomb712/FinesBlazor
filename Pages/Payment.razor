@@ -6,6 +6,8 @@
 @inject IHttpClientFactory ClientFactory
 @using Microsoft.Extensions.Logging
 @inject ILogger<Payment> Logger
+@inject NavigationManager _navigationManager
+
 
 <h1>Pay your fine here</h1>
 
@@ -43,13 +45,15 @@
         <InputDate id="expdate" @bind-Value="paymentModel.ExpDate" class="form-control" />
     </div>
 
+
     <div class="col-12">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button @onclick = "HandleSubmit" type="submit" class="btn btn-primary">Submit</button>
     </div>
 </EditForm>
 
 <img src="https://gamecardsdirect.com/content/image/Betaalmethoden/creditcard-nieuw.png" class="img-fluid m-3"
     alt="Placeholder image">
+
 @code {
 
     private PaymentModel paymentModel = new();
@@ -64,18 +68,27 @@
         Logger.LogInformation("CVC: " + paymentModel.CVC);
         Logger.LogInformation("FineID: " + paymentModel.FineID);
 
+        Console.WriteLine("Entered here");
+        PayFineAsync();
+
         // Process the form
     }
+
     private void ChangePropertyValue(string Id)
     {
         StateContainer.Property = Id;
     }
 
 
+
+    
+    //production
     private const string webApiUri = "https://fineapi.azurewebsites.net/api/Fines";
     //testing
+
     // private const string webApiUri = "http://localhost:5108/api/Fines";
     public static Fine newFine;
+
 
     private bool FineError;
     private bool shouldRender;
@@ -83,6 +96,7 @@
 
 
     protected override bool ShouldRender() => shouldRender;
+
 
     protected async Task RetrieveFineAsync()
     {
@@ -110,20 +124,27 @@
 
         shouldRender = true;
 
+    void NavigateToYourUrl(string page)
+    {
+     _navigationManager.NavigateTo("/FindMyFine", true);
 
     }
 
     public async Task PayFineAsync()
     {
 
+
         await RetrieveFineAsync();
 
         newFine.IsPaid = true;
+     
+        StateContainer.myFine.IsPaid = true;
 
-        var request = new HttpRequestMessage(HttpMethod.Put, webApiUri + "/" + fineID);
+
+        var request = new HttpRequestMessage(HttpMethod.Put, webApiUri + "/" + StateContainer.myFine.FineID);
         request.Headers.Add("Accept", "application/json");
         request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
-        var jsonFine = JsonSerializer.Serialize(newFine);
+        var jsonFine = JsonSerializer.Serialize(StateContainer.myFine);
         var content = new StringContent(jsonFine, Encoding.UTF8, "application/json");
         request.Content = content;
 
@@ -132,7 +153,13 @@
         var response = await client.SendAsync(request);
 
         if (response.IsSuccessStatusCode)
+
         {
+
+
+        {   
+            _navigationManager.NavigateTo("/payment_complete", true);
+          
 
         }
         else
@@ -144,5 +171,5 @@
 
     }
 
-}
 
+}
