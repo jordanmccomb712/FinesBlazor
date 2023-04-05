@@ -13,30 +13,26 @@
 </div>
 </div>
 
-<section class="intro">
-      <div class="get-started-intro">
+<!-- <section class="intro">
+      <div class="get-started-intro">  -->
         
-          <div class="gem-c-govspeak govuk-govspeak " data-module="govspeak" data-govspeak-module-started="true">
-    
-              <p>Pay a TV license fine issued by a local council.</p>
-
+          <div class="gem-c-govspeak">
+              <p class="gem-c-govspeak">This site is to pay your TV license fine. You will need your reference number from the letter that you were sent by TV licensing.</p>
           </div>
-      </div>
-</section>
+ <!--     </div>
+</section>  -->
 
 <br>
-<br><p> click here to pay your fine</p>
-<br>
-<!--
-<br>
-<br>
-<p> click here to pay your fine</p>
-<button @onclick ="goToFind"> Pay Fine </button>
+<p class="gem-c-govspeak"> Click here to pay your fine.</p>
+<button class="btn btn-success" @onclick ="goToFind"> Pay Fine </button>
 
 <br>
 <br>
-<p> Having trouble? Get in contact with us</p>
-<button @onclick ="goToContact"> Contact Us </button>
+<p class="gem-c-govspeak"> Having trouble? Get in contact with us.</p>
+<button class="btn btn-dark" @onclick ="goToContact"> Contact Us </button>
+
+<br>
+<br>
 
 @code {
     void goToFind(){
@@ -47,17 +43,16 @@
     }
 }
 
--->
 
 <header class="gem-c-inverse-header  gem-c-inverse-header--padding-top ">
   
-<div class="py-3 gem-c-title gem-c-title--inverse govuk-!-margin-top-8 govuk-!-margin-bottom-0">
+<div class="pt-5 py-3 gem-c-title gem-c-title--inverse govuk-!-margin-top-8 govuk-!-margin-bottom-0">
       <span class="govuk-caption-xl gem-c-title__context">
     Guidance 
 </span> 
 
 
-  <h1 class="py-3 gem-c-title__text govuk-heading-xl-2">
+  <h1 class="pt-2 gem-c-title__text govuk-heading-xl-2">
     Frequently Asked Questions and Answers
   </h1>
 </div>

@@ -14,7 +14,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-weight: 700;
-    font-size: 32px;
+    font-size: 36px;
     font-size: 2rem;
     line-height: 1.09375;
     display: block;
@@ -105,7 +105,7 @@ h1 {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-weight: 400;
-    font-size: 18px;
+    font-size: 22px;
     font-size: 1.125rem;
     line-height: 1.1111111111;
     display: block;
@@ -113,12 +113,12 @@ h1 {
     color: #ebeff1;
 }
 
-.govspeak, .gem-c-govspeak {
+.gem-c-govspeak {
     color: #0b0c0c;
     font-family: "GDS Transport",arial,sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 19px;
     line-height: 1.1428571429;
 }
