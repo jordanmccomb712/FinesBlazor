@@ -41,9 +41,9 @@
 
     private PaymentModel paymentModel = new();
 
-    private void HandleSubmit()
+    private void HandleValidSubmit()
     {
-        Logger.LogInformation("HandleSubmit called");
+        Logger.LogInformation("HandleValidSubmit called");
         Logger.LogInformation("title: " + paymentModel.Title);
         Logger.LogInformation("name: " + paymentModel.Name);
         Logger.LogInformation("Date: " + paymentModel.Date);
