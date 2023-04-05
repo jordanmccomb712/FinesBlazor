@@ -7,38 +7,36 @@
 @using Microsoft.Extensions.Logging
 @inject ILogger<Payment> Logger
 
-
-
-
-<button @onclick ="PayFineAsync"> Pay </button>
-
-@using Microsoft.Extensions.Logging
-@inject ILogger<Payment> Logger
-
 <h1>Pay your fine here</h1>
 
-<EditForm Model="@paymentModel" OnSubmit="@HandleSubmit">
-    <label for="fineID">Fine ID:</label>
-    <InputText id="fineID" @bind-Value="paymentModel.FineID"/>
+<EditForm Model="@paymentModel" OnSubmit="@HandleSubmit" class="row g-3">
+    <div class="col-md-6">
+        <label for="fineID" class="form-label">Fine ID:</label>
+        <InputText id="fineID" @bind-Value="paymentModel.FineID" class="form-control" />
 
-    <label for="title">Title:</label>
-    <InputText id="title" @bind-Value="paymentModel.Title"/>
+        <label for="title" class="form-label">Title:</label>
+        <InputText id="title" @bind-Value="paymentModel.Title" class="form-control" />
 
-    <label for="name">Cardholder Name:</label>
-    <InputText id="name" @bind-Value="paymentModel.Name"/>
+        <label for="name" class="form-label">Cardholder Name:</label>
+        <InputText id="name" @bind-Value="paymentModel.Name" class="form-control" />
 
-    <label for="date">Date:</label>
-    <InputDate id="date" @bind-Value="paymentModel.Date"/>
+        <label for="date" class="form-label">Date:</label>
+        <InputDate id="date" @bind-Value="paymentModel.Date" class="form-control" />
+    </div>
+    <div class="col-md-6">
+        <label for="cardNum" class="form-label">Card Number:</label>
+        <InputNumber id="cardNum" @bind-Value="paymentModel.CardNum" class="form-control" />
 
-    <label for="cardNum">Card Number:</label>
-    <InputNumber id="name" @bind-Value="paymentModel.CardNum"/>
-    
-    <label for="cvc">CVC:</label>
-    <InputNumber id="cvc" @bind-Value="paymentModel.CVC"/>
+        <label for="cvc" class="form-label">CVC:</label>
+        <InputNumber id="cvc" @bind-Value="paymentModel.CVC" class="form-control" />
+    </div>
 
-    <button type="submit">Submit</button>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
 </EditForm>
 
+<img src="https://gamecardsdirect.com/content/image/Betaalmethoden/creditcard-nieuw.png" class="img-fluid" alt="Placeholder image">
 @code {
 
     private PaymentModel paymentModel = new();
@@ -134,5 +132,4 @@
     }
     
 }
-
 
