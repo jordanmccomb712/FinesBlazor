@@ -85,7 +85,7 @@
     //production
     @* private const string webApiUri = "https://fineapi.azurewebsites.net/api/Fines"; *@
     //testing
-   //  private const string webApiUri = "http://localhost:5108/api/Fines";
+   private const string webApiUri = "http://localhost:5108/api/Fines";
     
     private bool FineError;
     private bool shouldRender;
@@ -93,34 +93,6 @@
 
 
     protected override bool ShouldRender() => shouldRender;
-
-
-    protected async Task RetrieveFineAsync()
-    {
-
-
-        fineID = StateContainer.testID;
-        var request = new HttpRequestMessage(HttpMethod.Get, webApiUri + "/" + fineID);
-        request.Headers.Add("Accept", "application/json");
-        request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
-
-        var client = ClientFactory.CreateClient();
-
-        var response = await client.SendAsync(request);
-
-
-        if (response.IsSuccessStatusCode)
-        {
-            using var responseStream = await response.Content.ReadAsStreamAsync();
-            newFine = await JsonSerializer.DeserializeAsync<Fine>(responseStream);
-        }
-        else
-        {
-            FineError = true;
-        }
-
-        shouldRender = true;
-    }
 
     void NavigateToYourUrl(string page)
     {
@@ -130,11 +102,6 @@
 
     public async Task PayFineAsync()
     {
-
-
-        await RetrieveFineAsync();
-
-        newFine.IsPaid = true;
 
         StateContainer.myFine.IsPaid = true;
 
