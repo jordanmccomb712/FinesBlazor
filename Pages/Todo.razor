@@ -57,22 +57,19 @@
 
 @code {
 
-    void pushStart()
-    {
+    void pushStart(){
         StateContainer.startButtonPushed = true;
         _navigationManager.NavigateTo("/FindMyFine", true);
 
     }
-    void pushReset()
-    {
+     void pushReset(){
         StateContainer.startButtonPushed = false;
         StateContainer.foundUser = false;
         _navigationManager.NavigateTo("/FindMyFine", true);
 
     }
 
-    void gotoPayment()
-    {
+      void gotoPayment(){
         StateContainer.startButtonPushed = false;
         StateContainer.foundUser = false;
         _navigationManager.NavigateTo("/payment", true);
@@ -81,25 +78,24 @@
 
     void NavigateToYourUrl(string page)
     {
-        _navigationManager.NavigateTo("/FindMyFine", true);
+     _navigationManager.NavigateTo("/FindMyFine", true);
     }
+    
 
-
-        //production
-    @* private const string webApiUri = "https://fineapi.azurewebsites.net/api/Fines"; *@
+    //production
+ //    private const string webApiUri = "https://fineapi.azurewebsites.net/api/Fines"; 
     //testing
-    private const string webApiUri = "http://localhost:5108/api/Fines";
+    private const string webApiUri = "http://localhost:5108/api/Fines";  
     private bool FineError;
     private bool shouldRender;
     private string? fineID = "";
 
     protected override bool ShouldRender() => shouldRender;
-
-
-    protected async Task RetrieveFineAsync()
+    
+    
+    protected async  Task RetrieveFineAsync()
     {
-        if (fineID == String.Empty)
-        {
+        if(fineID == String.Empty){
             return;
         }
         StateContainer.testID = fineID;
@@ -125,7 +121,7 @@
 
         shouldRender = true;
 
-
+        
 
 
         //FOR TESTING PURPOSES
@@ -136,7 +132,7 @@
         Console.WriteLine(StateContainer.myFine.DateIssued);
         Console.WriteLine(StateContainer.myFine.IsPaid);
 
-
+        
     }
-
+    
 }
