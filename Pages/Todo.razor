@@ -35,7 +35,7 @@
     <ol>
     <li>Fine ID: @StateContainer.myFine.FineID</li>
     <li>Name: @StateContainer.myFine.FullName</li>
-    <li>Fine Amout: @StateContainer.myFine.AmountDue</li>
+    <li>Fine Amount: @StateContainer.myFine.AmountDue</li>
     <li>Has the fine been paid: @StateContainer.myFine.IsPaid</li>
     <li>Date Fine issued: @StateContainer.myFine.DateIssued</li>
 </ol>
@@ -83,9 +83,9 @@
     
 
     //production
-     private const string webApiUri = "https://fineapi.azurewebsites.net/api/Fines"; 
+    // private const string webApiUri = "https://fineapi.azurewebsites.net/api/Fines"; 
     //testing
-  //  private const string webApiUri = "http://localhost:5108/api/Fines";  
+    private const string webApiUri = "http://localhost:5108/api/Fines";  
     private bool FineError;
     private bool shouldRender;
     private string? fineID = "";
