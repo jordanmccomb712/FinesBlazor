@@ -36,12 +36,11 @@
     </div>
     <div class="col-md-6">
         <label for="cardNum" class="form-label">Card Number:</label>
-        <small class="text-muted">Must be 9 digits - only works with 202020202 atm</small>
-        <InputText id="cardNum" @bind-Value="paymentModel.CardNum" class="form-control" />
+        <InputText id="cardNum" @bind-Value="paymentModel.CardNum" class="form-control" minlength="16" maxlength="19"/>
 
         <label for="cvc" class="form-label">CVC:</label>
-        <small class="text-muted">can only be 3 digits</small>
-        <InputText id="cvc" @bind-Value="paymentModel.CVC" class="form-control" maxlength="3" minlength="3" />
+        <small class="text-muted">Find your security code as the 3 digits on the back of your card</small>
+        <InputText id="cvc" @bind-Value="paymentModel.CVC" class="form-control" minlength="3" maxlength="3"/>
 
         <label for="expdate" class="form-label">Card Expiry Date:</label>
         <InputDate id="expdate" @bind-Value="paymentModel.ExpDate" class="form-control" />
