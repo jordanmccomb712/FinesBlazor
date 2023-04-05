@@ -1,9 +1,25 @@
 .gem-c-title__text {
     margin: 0;
+    color:white;
 }
 
 .govuk-header__link:link, .govuk-header__link:visited {
     color: #fff;
+}
+
+
+.govuk-heading-xl-2 {
+    color: white;
+    font-family: "GDS Transport",arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 700;
+    font-size: 36px;
+    font-size: 2rem;
+    line-height: 1.09375;
+    display: block;
+    margin-top: 0;
+    margin-bottom: 30px;
 }
 
 .govuk-heading-xl {
@@ -54,4 +70,55 @@ h1 {
     font-size: 48px;
     font-size: 3rem;
     line-height: 1.0416666667;
+}
+
+.gem-c-inverse-header--padding-top {
+    padding-top: 15px;
+}
+
+.test
+{
+    color: pink;
+}
+
+
+.gem-c-inverse-header {
+    width: 100%;
+    background-color: #1d70b8;
+    color: #fff;
+    margin-bottom: 30px;
+    padding: 0 30px 30px;
+    box-sizing: border-box;
+}
+
+.gem-c-layout-for-public {
+    font-family: "GDS Transport",arial,sans-serif;
+}
+
+.gem-c-title--inverse {
+    color: #fff;
+}
+
+.govuk-caption-xl {
+    padding-top: 5px;
+    font-family: "GDS Transport",arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    font-size: 22px;
+    font-size: 1.125rem;
+    line-height: 1.1111111111;
+    display: block;
+    margin-bottom: 5px;
+    color: #ebeff1;
+}
+
+.gem-c-govspeak {
+    color: #0b0c0c;
+    font-family: "GDS Transport",arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 1.1428571429;
 }
