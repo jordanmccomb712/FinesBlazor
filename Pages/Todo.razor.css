@@ -78,4 +78,15 @@ p {
     line-height: 1;
 }
 
+.govuk-input {
+    width: 225px;
+    margin-top: 15px;
+    margin-left: 80px;
+}
+
+.govuk-button {
+    margin-top: 18px;
+    margin-left: 80px;
+}
+
 
