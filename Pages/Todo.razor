@@ -4,31 +4,78 @@
 @using System.Text.Json.Serialization
 @inject StateContainer StateContainer
 @inject IHttpClientFactory ClientFactory
+@inject NavigationManager _navigationManager
 
-
-
+@if(!StateContainer.startButtonPushed){
+<button @onclick ="pushStart"> Start </button>
+}
+@if(StateContainer.startButtonPushed){
+<button @onclick ="pushReset"> Reset </button>
+}
+<br>
+<br>
+@if(StateContainer.startButtonPushed && StateContainer.foundUser == false){
 <input placeholder="Please enter your fine reference" @bind="fineID"/>
 <button @onclick ="RetrieveFineAsync"> Search </button>
+}
 
-<NavLink class="nav-link" href="payment/">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Pay Now
-</NavLink>
+<br>
+<br>
 
 
+@if(StateContainer.foundUser)
+{
+<ol>
+  <li>Fine ID: @StateContainer.myFine.FineID</li>
+  <li>Name: @StateContainer.myFine.FullName</li>
+  <li>Fine Amout: @StateContainer.myFine.AmountDue</li>
+  <li>Has the fine been paid: @StateContainer.myFine.IsPaid</li>
+  <li>Date Fine issued: @StateContainer.myFine.DateIssued</li>
+</ol>
+}
+
+@if(StateContainer.foundUser)
+{
+<br>
+<br>
+<button @onclick ="gotoPayment"> Pay Now </button>
+}
 
 @code {
-      private void ChangePropertyValue(string Id)
-    {
-        StateContainer.Property = Id;
+
+    void pushStart(){
+        StateContainer.startButtonPushed = true;
+        _navigationManager.NavigateTo("/FindMyFine", true);
+
     }
+     void pushReset(){
+        StateContainer.startButtonPushed = false;
+        StateContainer.foundUser = false;
+        _navigationManager.NavigateTo("/FindMyFine", true);
+
+    }
+
+      void gotoPayment(){
+        StateContainer.startButtonPushed = false;
+        StateContainer.foundUser = false;
+        _navigationManager.NavigateTo("/payment", true);
+
+    }
+
+    void NavigateToYourUrl(string page)
+    {
+     _navigationManager.NavigateTo("/FindMyFine", true);
+    }
+
+    
+   
+
     
 
     //production
     private const string webApiUri = "https://fineapi.azurewebsites.net/api/Fines";
     //testing
-    // private const string webApiUri = "http://localhost:5108/api/Fines";
-    public static Fine newFine;
-    
+   //  private const string webApiUri = "http://localhost:5108/api/Fines";  
     private bool FineError;
     private bool shouldRender;
     private string? fineID = "";
@@ -38,7 +85,9 @@
     
     protected async  Task RetrieveFineAsync()
     {
-
+        if(fineID == String.Empty){
+            return;
+        }
         StateContainer.testID = fineID;
         var request = new HttpRequestMessage(HttpMethod.Get, webApiUri + "/" + fineID);
         request.Headers.Add("Accept", "application/json");
@@ -52,7 +101,8 @@
         if (response.IsSuccessStatusCode)
         {
             using var responseStream = await response.Content.ReadAsStreamAsync();
-            newFine = await JsonSerializer.DeserializeAsync<Fine>(responseStream);
+            StateContainer.myFine = await JsonSerializer.DeserializeAsync<Fine>(responseStream);
+            StateContainer.foundUser = true;
         }
         else
         {
@@ -61,16 +111,17 @@
 
         shouldRender = true;
 
-        //todo, make this a return of a todoItems list, then add that to the post
+        
 
 
         //FOR TESTING PURPOSES
 
-        Console.WriteLine(newFine.FineID);
-        Console.WriteLine(newFine.FullName);
-        Console.WriteLine(newFine.AmountDue);
-        Console.WriteLine(newFine.DateIssued);
-        Console.WriteLine(newFine.IsPaid);
+        Console.WriteLine(StateContainer.myFine.FineID);
+        Console.WriteLine(StateContainer.myFine.FullName);
+        Console.WriteLine(StateContainer.myFine.AmountDue);
+        Console.WriteLine(StateContainer.myFine.DateIssued);
+        Console.WriteLine(StateContainer.myFine.IsPaid);
+
         
     }
     
