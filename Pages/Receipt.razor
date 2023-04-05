@@ -1,4 +1,5 @@
 @page "/payment_complete"
+@inject NavigationManager _navigationManager
 
 <h2><b>Your payment is complete</b></h2>
 
@@ -6,6 +7,15 @@
 
 <h3><b>add more text here</b></h3>
 
+<br>
+<br>
+<button @onclick ="goHome"> Home </button>
+
+@code {
+    void goHome(){
+        _navigationManager.NavigateTo("/", true);
+    }
+}
 
 
 
