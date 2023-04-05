@@ -3,7 +3,6 @@
 }
 
 .top-row {
-    height: 3.5rem;
     background-color: rgba(0,0,0,0.4);
 }
 
@@ -50,7 +49,9 @@
     color: white;
 }
 
-@media (min-width: 641px) {
+
+/* @media (min-width: 641px) { */
+@media (min-width: 1px) {
     .navbar-toggler {
         display: none;
     }
