@@ -1,25 +1,15 @@
 ﻿@page "/"
 @inject NavigationManager _navigationManager
 
-<h1>TV License Fine Project</h1>
+<div class="govuk-grid-column-two-thirds">
+    
 
-Add an FAQ section
+<div class="gem-c-title govuk-!-margin-top-8 govuk-!-margin-bottom-8">
 
-<br>
-<br>
-<p> click here to pay your fine</p>
-<button @onclick ="goToFind"> Pay Fine </button>
+  <h1 class="gem-c-title__text govuk-heading-xl">
+    Pay a court fine
+  </h1>
+</div>
+</div>
 
-<br>
-<br>
-<p> Having trouble? Get in contact with us</p>
-<button @onclick ="goToContact"> Contact Us </button>
 
-@code {
-    void goToFind(){
-        _navigationManager.NavigateTo("/FindMyFine", true);
-    }
-     void goToContact(){
-        _navigationManager.NavigateTo("/contact", true);
-    }
-}

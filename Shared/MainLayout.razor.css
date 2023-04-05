@@ -8,6 +8,7 @@ main {
     flex: 1;
 }
 
+
 .sidebar {
     background-image: linear-gradient(180deg, rgb(5, 5, 5) 0%, #0a090a 70%);
 }
@@ -67,4 +68,27 @@ main {
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
     }
+}
+
+.govuk-header__link:link, .govuk-header__link:visited {
+    color: #fff;
+}
+
+.govuk-header__logotype {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.govuk-header__logotype:last-child {
+    margin-right: 0;
+}
+.govuk-header__link--homepage {
+    font-family: "GDS Transport",arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 700;
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 30px;
+    line-height: 1;
 }
