@@ -7,10 +7,7 @@
 @using Microsoft.Extensions.Logging
 @inject ILogger<Payment> Logger
 
-
-
-
-<button @onclick ="PayFineAsync"> Pay </button>
+@* <button @onclick ="PayFineAsync"> Pay </button> *@
 
 @using Microsoft.Extensions.Logging
 @inject ILogger<Payment> Logger
@@ -51,7 +48,7 @@
     </div>
 
 
-        <button type="submit">Submit</button>
+        <button @onclick ="PayFineAsync" type="submit">Pay</button>
 
 </EditForm>
 
