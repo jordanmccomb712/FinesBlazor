@@ -1,14 +1,38 @@
 @page "/payment_complete"
 @inject NavigationManager _navigationManager
+@using System.Threading.Tasks
 
-<h2><b>Your payment is complete</b></h2>
+<div style="background-color: #f2f2f2; padding: 20px;">
+    <h1>Transaction Completed</h1>
 
-<br>
+    <p>Thank you for your payment. Your transaction has been completed successfully. Please keep note of your Reference number.</p>
 
-<h3><b>add more text here</b></h3>
+    <div class="card bg-light mb-3">
+        <div class="card-header">Reference Number</div>
+        <div class="card-body">
+            <h5 class="card-title">@ReferenceNum</h5>
+        </div>
+    </div>
 
-<br>
-<br>
+</div>
+
+<p><b>We have sent you a confirmation receipt.</b></p>
+
+@code {
+    private string ReferenceNum;
+
+    protected override Task OnInitializedAsync()
+    {
+        // Generate a random alphanumeric string of length 10
+        var random = new Random();
+        ReferenceNum = new string(
+            Enumerable.Repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", 10)
+                      .Select(s => s[random.Next(s.Length)])
+                      .ToArray());
+        return Task.CompletedTask;
+    }
+}
+
 <button @onclick ="goHome"> Home </button>
 
 @code {
