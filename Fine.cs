@@ -9,11 +9,11 @@ public class Fine{
     [JsonPropertyName("amountDue")]
     public double AmountDue {get; set;} //in GBP
     [JsonPropertyName("dateIssued")]
-    public DateTime DateIssued {get; set;}
+    public DateOnly DateIssued {get; set;}
     [JsonPropertyName("isPaid")]
      public bool IsPaid {get; set;}
 
-    public Fine(string fineID, string fullName, double amountDue, DateTime dateIssued, bool isPaid)
+    public Fine(string fineID, string fullName, double amountDue, DateOnly dateIssued, bool isPaid)
     {
         this.FineID = fineID;
         this.FullName = fullName;
