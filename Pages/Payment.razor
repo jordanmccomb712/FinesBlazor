@@ -8,46 +8,62 @@
 @inject ILogger<Payment> Logger
 @inject NavigationManager _navigationManager
 
+
 <h1>Pay your fine here</h1>
 
-<EditForm Model="@paymentModel" OnSubmit="@HandleSubmit" class="row g-3">
+<EditForm Model="@paymentModel" OnValidSubmit="@HandleValidSubmit" class="row g-3">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
     <div class="col-md-6">
-        <label for="fineID" class="form-label">Fine ID:</label>
-        <InputText id="fineID" @bind-Value="paymentModel.FineID" class="form-control" />
-
         <label for="title" class="form-label">Title:</label>
-        <InputText id="title" @bind-Value="paymentModel.Title" class="form-control" />
+            <InputSelect id="title" @bind-Value="paymentModel.Title" class="form-control">
+                <option value="">Select title</option>
+                <option value="Miss">Miss</option>
+                <option value="Ms">Ms</option>
+                <option value="Mr">Mr</option>
+                <option value="Mrs">Mrs</option>
+                <option value="N/A">Prefer not to say</option>
+            </InputSelect>
 
         <label for="name" class="form-label">Cardholder Name:</label>
         <InputText id="name" @bind-Value="paymentModel.Name" class="form-control" />
 
-        <label for="date" class="form-label">Date:</label>
-        <InputDate id="date" @bind-Value="paymentModel.Date" class="form-control" />
+        <label for="fineID" class="form-label">Fine ID:</label>
+        <InputText id="fineID" @bind-Value="paymentModel.FineID" class="form-control"
+            placeholder="@StateContainer.myFine.FineID" readonly="true"/>
     </div>
     <div class="col-md-6">
         <label for="cardNum" class="form-label">Card Number:</label>
-        <InputNumber id="cardNum" @bind-Value="paymentModel.CardNum" class="form-control" />
+        <small class="text-muted">Must be 9 digits - only works with 202020202 atm</small>
+        <InputText id="cardNum" @bind-Value="paymentModel.CardNum" class="form-control" />
 
         <label for="cvc" class="form-label">CVC:</label>
-        <InputNumber id="cvc" @bind-Value="paymentModel.CVC" class="form-control" />
+        <small class="text-muted">can only be 3 digits</small>
+        <InputText id="cvc" @bind-Value="paymentModel.CVC" class="form-control" maxlength="3" minlength="3" />
+
+        <label for="expdate" class="form-label">Card Expiry Date:</label>
+        <InputDate id="expdate" @bind-Value="paymentModel.ExpDate" class="form-control" />
     </div>
+
 
     <div class="col-12">
         <button @onclick = "HandleSubmit" type="submit" class="btn btn-primary">Submit</button>
     </div>
 </EditForm>
 
-<img src="https://gamecardsdirect.com/content/image/Betaalmethoden/creditcard-nieuw.png" class="img-fluid" alt="Placeholder image">
+<img src="https://gamecardsdirect.com/content/image/Betaalmethoden/creditcard-nieuw.png" class="img-fluid m-3"
+    alt="Placeholder image">
+
 @code {
 
     private PaymentModel paymentModel = new();
 
-    private void HandleSubmit()
+    private void HandleValidSubmit()
     {
-        Logger.LogInformation("HandleSubmit called");
+        Logger.LogInformation("HandleValidSubmit called");
         Logger.LogInformation("title: " + paymentModel.Title);
         Logger.LogInformation("name: " + paymentModel.Name);
-        Logger.LogInformation("Date: " + paymentModel.Date);
+        Logger.LogInformation("ExpDate: " + paymentModel.ExpDate);
         Logger.LogInformation("CardNum: " + paymentModel.CardNum);
         Logger.LogInformation("CVC: " + paymentModel.CVC);
         Logger.LogInformation("FineID: " + paymentModel.FineID);
@@ -58,12 +74,22 @@
         // Process the form
     }
 
+    private void ChangePropertyValue(string Id)
+    {
+        StateContainer.Property = Id;
+    }
+
+
+
     
     //production
     private const string webApiUri = "https://fineapi.azurewebsites.net/api/Fines";
     //testing
-  //   private const string webApiUri = "http://localhost:5108/api/Fines";
-    
+
+    // private const string webApiUri = "http://localhost:5108/api/Fines";
+    public static Fine newFine;
+
+
     private bool FineError;
     private bool shouldRender;
     private string? fineID = "";
@@ -71,16 +97,49 @@
 
     protected override bool ShouldRender() => shouldRender;
 
+
+    protected async Task RetrieveFineAsync()
+    {
+
+
+        fineID = StateContainer.testID;
+        var request = new HttpRequestMessage(HttpMethod.Get, webApiUri + "/" + fineID);
+        request.Headers.Add("Accept", "application/json");
+        request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
+
+        var client = ClientFactory.CreateClient();
+
+        var response = await client.SendAsync(request);
+
+
+        if (response.IsSuccessStatusCode)
+        {
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            newFine = await JsonSerializer.DeserializeAsync<Fine>(responseStream);
+        }
+        else
+        {
+            FineError = true;
+        }
+
+        shouldRender = true;
+
     void NavigateToYourUrl(string page)
     {
      _navigationManager.NavigateTo("/FindMyFine", true);
+
     }
 
-     public async  Task PayFineAsync()
+    public async Task PayFineAsync()
     {
 
+
+        await RetrieveFineAsync();
+
+        newFine.IsPaid = true;
      
         StateContainer.myFine.IsPaid = true;
+
 
         var request = new HttpRequestMessage(HttpMethod.Put, webApiUri + "/" + StateContainer.myFine.FineID);
         request.Headers.Add("Accept", "application/json");
@@ -94,9 +153,14 @@
         var response = await client.SendAsync(request);
 
         if (response.IsSuccessStatusCode)
+
+        {
+
+
         {   
             _navigationManager.NavigateTo("/payment_complete", true);
           
+
         }
         else
         {
@@ -104,8 +168,8 @@
         }
 
         shouldRender = true;
-        
-    }
-    
-}
 
+    }
+
+
+}

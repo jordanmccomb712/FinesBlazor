@@ -15,7 +15,9 @@
 <br>
 <br>
 @if(StateContainer.startButtonPushed && StateContainer.foundUser == false){
-<input class = "w-25" placeholder="Please enter your fine reference" @bind="fineID"/>
+
+<input class="w-25" placeholder="Please enter your fine reference" @bind="fineID"/>
+
 <button @onclick ="RetrieveFineAsync"> Search </button>
 }
 
@@ -33,7 +35,6 @@
   <li>Date Fine issued: @StateContainer.myFine.DateIssued</li>
 </ol>
 }
-
 @if(StateContainer.foundUser && StateContainer.myFine.IsPaid == false)
 {
 <br>
@@ -47,6 +48,7 @@
 <br>
 <h3>This fine has already been paid</h3>
 }
+
 
 @code {
 
@@ -82,7 +84,9 @@
     //production
     private const string webApiUri = "https://fineapi.azurewebsites.net/api/Fines";
     //testing
+
    // private const string webApiUri = "http://localhost:5108/api/Fines";  
+
     private bool FineError;
     private bool shouldRender;
     private string? fineID = "";
