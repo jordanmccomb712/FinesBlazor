@@ -8,7 +8,7 @@ public class StateContainer
 
     private string? savedFineID;
 
-    public static Fine myFine {get; set;} = new Fine("xxxxxxxxxxxx", "place holder", 0, new DateTime(2021,12,31), false);
+    public static Fine myFine {get; set;} = new Fine("xxxxxxxxxxxx", "place holder", 0, new DateOnly(2021,12,31), false);
 
     public string Property
     {
