@@ -7,51 +7,36 @@
 @using Microsoft.Extensions.Logging
 @inject ILogger<Payment> Logger
 
-@using Microsoft.Extensions.Logging
-@inject ILogger<Payment> Logger
-
 <h1>Pay your fine here</h1>
 
+<EditForm Model="@paymentModel" OnSubmit="@HandleSubmit" class="row g-3">
+    <div class="col-md-6">
+        <label for="fineID" class="form-label">Fine ID:</label>
+        <InputText id="fineID" @bind-Value="paymentModel.FineID" class="form-control" />
 
-<EditForm Model="@paymentModel" OnSubmit="@HandleSubmit">
+        <label for="title" class="form-label">Title:</label>
+        <InputText id="title" @bind-Value="paymentModel.Title" class="form-control" />
 
-    <label for="fineID">Fine ID:</label>
-    <div class="m-3">
-        <InputText id="fineID" @bind-Value="paymentModel.FineID" placeholder="Fine ID" />
+        <label for="name" class="form-label">Cardholder Name:</label>
+        <InputText id="name" @bind-Value="paymentModel.Name" class="form-control" />
+
+        <label for="date" class="form-label">Date:</label>
+        <InputDate id="date" @bind-Value="paymentModel.Date" class="form-control" />
+    </div>
+    <div class="col-md-6">
+        <label for="cardNum" class="form-label">Card Number:</label>
+        <InputNumber id="cardNum" @bind-Value="paymentModel.CardNum" class="form-control" />
+
+        <label for="cvc" class="form-label">CVC:</label>
+        <InputNumber id="cvc" @bind-Value="paymentModel.CVC" class="form-control" />
     </div>
 
-    <label for="title">Title:</label>
-    <div class="m-3">
-        <InputText id="title" @bind-Value="paymentModel.Title" placeholder="Title" />
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
-
-    <label for="name">Cardholder Name:</label>
-    <div class="m-3">
-        <InputText id="name" @bind-Value="paymentModel.Name" placeholder="Cardholder name" />
-    </div>
-
-    <label for="date">Date:</label>
-    <div class="m-3">
-        <InputDate id="date" @bind-Value="paymentModel.Date" />
-    </div>
-
-    <label for="cardNum">Card Number:</label>
-    <div class="m-3">
-        <InputNumber id="name" @bind-Value="paymentModel.CardNum" placeholder="Card number" />
-    </div>
-
-    <label for="cvc">CVC:</label>
-    <div class="m-3">
-        <InputNumber id="cvc" @bind-Value="paymentModel.CVC" placeholder="CVC" />
-    </div>
-
-
-        <button @onclick ="PayFineAsync" type="submit">Pay</button>
-
 </EditForm>
 
-
-
+<img src="https://gamecardsdirect.com/content/image/Betaalmethoden/creditcard-nieuw.png" class="img-fluid" alt="Placeholder image">
 @code {
 
     private PaymentModel paymentModel = new();
@@ -147,5 +132,4 @@
     }
     
 }
-
 
