@@ -36,6 +36,7 @@
     </div>
     <div class="col-md-6">
         <label for="cardNum" class="form-label">Card Number:</label>
+        <small class="text-muted">Please do not include spaces</small>
         <InputText id="cardNum" @bind-Value="paymentModel.CardNum" class="form-control" minlength="16" maxlength="19"/>
 
         <label for="cvc" class="form-label">CVC:</label>
@@ -75,16 +76,10 @@
         // Process the form
     }
 
-    private void ChangePropertyValue(string Id)
-    {
-        StateContainer.Property = Id;
-    }
-
-
     //production
-    @* private const string webApiUri = "https://fineapi.azurewebsites.net/api/Fines"; *@
+    private const string webApiUri = "https://fineapi.azurewebsites.net/api/Fines"; 
     //testing
-   private const string webApiUri = "http://localhost:5108/api/Fines";
+    // private const string webApiUri = "http://localhost:5108/api/Fines";
     
     private bool FineError;
     private bool shouldRender;
@@ -102,6 +97,9 @@
     public async Task PayFineAsync()
     {
 
+        
+
+
         StateContainer.myFine.IsPaid = true;
 
 
@@ -109,6 +107,7 @@
         request.Headers.Add("Accept", "application/json");
         request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
         var jsonFine = JsonSerializer.Serialize(StateContainer.myFine);
+        Console.WriteLine(jsonFine);
         var content = new StringContent(jsonFine, Encoding.UTF8, "application/json");
         request.Content = content;
 
